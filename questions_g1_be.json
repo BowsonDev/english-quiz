@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "question": "I _____ a student. My name is Kevin.",
+    "options": ["is", "am", "are", "be"],
+    "answer": "am",
+    "explanation": "主詞是 I (我)，Be 動詞必須搭配 am。"
+  },
+  {
+    "id": 2,
+    "question": "_____ those your books over there?",
+    "options": ["Is", "Am", "Are", "Be"],
+    "answer": "Are",
+    "explanation": "Those (那些) 是複數代名詞，Be 動詞要用 Are。"
+  },
+  {
+    "id": 3,
+    "question": "What _____ this?",
+    "options": ["is", "am", "are", "do"],
+    "answer": "is",
+    "explanation": "This (這個) 是單數，Be 動詞用 is。"
+  }
+]

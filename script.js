@@ -1,160 +1,211 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 變數初始化
+    
+    // --- 1. 課表設定 (Syllabus Configuration) ---
+    // 這裡定義了你的選單結構，如果要新增題目，先建立 JSON 檔，再把檔名加進這裡
+    const curriculum = [
+        {
+            grade: "國一 (七年級)",
+            topics: [
+                { name: "Be 動詞與代名詞", file: "questions_g1_be.json" },
+                { name: "現在簡單式", file: "questions_g1_simple.json" }, // 需自行建立檔案
+                { name: "現在進行式", file: "questions_g1_continuous.json" } // 需自行建立檔案
+            ]
+        },
+        {
+            grade: "國二 (八年級)",
+            topics: [
+                { name: "過去簡單式", file: "questions_g2_past.json" },
+                { name: "未來式與比較級", file: "questions_g2_future.json" } // 需自行建立檔案
+            ]
+        },
+        {
+            grade: "國三 (九年級)",
+            topics: [
+                { name: "現在完成式", file: "questions_g3_perfect.json" },
+                { name: "被動與關係子句", file: "questions_g3_passive.json" } // 需自行建立檔案
+            ]
+        }
+    ];
+
+    // --- 變數初始化 ---
     let questions = [];
     let currentQuestionIndex = 0;
     let score = 0;
-    let isAnswering = false; // 防止重複點擊
+    let currentJsonFile = ''; // 紀錄當前正在寫哪個題庫
 
     // DOM 元素
-    const loadingMsg = document.getElementById('loading-message');
+    const menuView = document.getElementById('menu-view');
     const quizContainer = document.getElementById('quiz-container');
     const resultContainer = document.getElementById('result-container');
+    const loadingMsg = document.getElementById('loading-message');
+    const syllabusContainer = document.getElementById('syllabus-container');
+
+    // 測驗區元素
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+    const nextBtn = document.getElementById('next-btn');
+    const explanationContainer = document.getElementById('explanation-container');
+    const explanationText = document.getElementById('explanation-text');
     
+    // 資訊顯示
     const questionCountEl = document.getElementById('question-count');
     const scoreDisplayEl = document.getElementById('score-display');
     const progressFill = document.getElementById('progress-fill');
     
-    const questionText = document.getElementById('question-text');
-    const optionsContainer = document.getElementById('options-container');
-    
-    const explanationContainer = document.getElementById('explanation-container');
-    const explanationText = document.getElementById('explanation-text');
-    const nextBtn = document.getElementById('next-btn');
-    const restartBtn = document.getElementById('restart-btn');
+    // --- 2. 初始化選單 ---
+    function initMenu() {
+        syllabusContainer.innerHTML = ''; // 清空
+        
+        curriculum.forEach(level => {
+            const section = document.createElement('div');
+            section.className = 'grade-section';
+            
+            const title = document.createElement('div');
+            title.className = 'grade-title';
+            title.textContent = level.grade;
+            
+            const grid = document.createElement('div');
+            grid.className = 'topic-grid';
+            
+            level.topics.forEach(topic => {
+                const btn = document.createElement('button');
+                btn.className = 'topic-btn';
+                btn.textContent = topic.name;
+                btn.onclick = () => loadQuiz(topic.file);
+                grid.appendChild(btn);
+            });
+            
+            section.appendChild(title);
+            section.appendChild(grid);
+            syllabusContainer.appendChild(section);
+        });
+    }
 
-    const finalScoreEl = document.getElementById('final-score');
-    const resultCommentEl = document.getElementById('result-comment');
-
-    // 1. 讀取題庫
-    async function fetchQuestions() {
+    // --- 3. 載入特定題庫 ---
+    async function loadQuiz(filename) {
+        currentJsonFile = filename;
+        menuView.classList.add('hidden');
+        loadingMsg.classList.remove('hidden');
+        
         try {
-            const response = await fetch('questions.json');
-            if (!response.ok) throw new Error('無法讀取題庫');
+            const response = await fetch(filename);
+            if (!response.ok) throw new Error('找不到題庫檔案');
             const data = await response.json();
-            questions = shuffleArray(data); // 題目洗牌
+            
+            questions = shuffleArray(data);
             startQuiz();
         } catch (error) {
-            loadingMsg.textContent = '載入失敗，請檢查網路連線。';
-            console.error(error);
+            alert('題庫載入失敗：' + error.message + '\n請確認該 JSON 檔案是否存在。');
+            showMenu();
+        } finally {
+            loadingMsg.classList.add('hidden');
         }
     }
 
-    // 2. 洗牌演算法 (Fisher-Yates)
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
-
-    // 3. 開始測驗
+    // --- 4. 測驗邏輯 (與之前類似，但加入返回功能) ---
     function startQuiz() {
         currentQuestionIndex = 0;
         score = 0;
-        loadingMsg.classList.add('hidden');
-        resultContainer.classList.add('hidden');
         quizContainer.classList.remove('hidden');
+        resultContainer.classList.add('hidden');
         updateProgress();
         showQuestion();
     }
 
-    // 4. 顯示題目
     function showQuestion() {
         resetState();
-        const currentQuestion = questions[currentQuestionIndex];
+        const q = questions[currentQuestionIndex];
+        questionText.textContent = q.question;
         
-        questionText.textContent = `${currentQuestionIndex + 1}. ${currentQuestion.question}`;
-
-        currentQuestion.options.forEach(option => {
-            const button = document.createElement('button');
-            button.textContent = option;
-            button.classList.add('option-btn');
-            // 將按鈕與正確答案做關聯
-            if (option === currentQuestion.answer) {
-                button.dataset.correct = "true";
-            }
-            button.addEventListener('click', selectAnswer);
-            optionsContainer.appendChild(button);
+        q.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.textContent = opt;
+            btn.className = 'option-btn';
+            if (opt === q.answer) btn.dataset.correct = "true";
+            btn.addEventListener('click', selectAnswer);
+            optionsContainer.appendChild(btn);
         });
     }
 
     function resetState() {
-        isAnswering = true;
         explanationContainer.classList.add('hidden');
         while (optionsContainer.firstChild) {
             optionsContainer.removeChild(optionsContainer.firstChild);
         }
     }
 
-    // 5. 選擇答案互動
     function selectAnswer(e) {
-        if (!isAnswering) return; // 鎖定防止連點
-        isAnswering = false;
-
         const selectedBtn = e.target;
-        const isCorrect = selectedBtn.dataset.correct === "true";
+        if (selectedBtn.disabled) return; // 防止重複點擊
 
-        // 判斷對錯樣式
+        const isCorrect = selectedBtn.dataset.correct === "true";
         if (isCorrect) {
             selectedBtn.classList.add('correct');
-            score += 10; // 每題 10 分 (可自訂)
+            score += 10;
         } else {
             selectedBtn.classList.add('wrong');
         }
 
-        // 標示出正確答案 (無論對錯都要顯示)
-        Array.from(optionsContainer.children).forEach(button => {
-            if (button.dataset.correct === "true") {
-                button.classList.add('correct');
-            }
-            button.disabled = true; // 鎖定所有按鈕
+        Array.from(optionsContainer.children).forEach(btn => {
+            if (btn.dataset.correct === "true") btn.classList.add('correct');
+            btn.disabled = true;
         });
 
-        // 顯示詳解與下一題按鈕
         explanationText.textContent = questions[currentQuestionIndex].explanation;
         explanationContainer.classList.remove('hidden');
         updateProgress();
     }
 
-    // 6. 更新進度與分數
     function updateProgress() {
         scoreDisplayEl.textContent = `得分: ${score}`;
-        questionCountEl.textContent = `題目: ${currentQuestionIndex + 1}/${questions.length}`;
-        const progressPercent = ((currentQuestionIndex + 1) / questions.length) * 100;
-        progressFill.style.width = `${progressPercent}%`;
+        questionCountEl.textContent = `${currentQuestionIndex + 1}/${questions.length}`;
+        progressFill.style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
     }
 
-    // 7. 下一題或結算
+    // --- 5. 導航控制 ---
+    function showMenu() {
+        quizContainer.classList.add('hidden');
+        resultContainer.classList.add('hidden');
+        menuView.classList.remove('hidden');
+    }
+
     nextBtn.addEventListener('click', () => {
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.length) {
             showQuestion();
         } else {
-            showResults();
+            showResult();
         }
     });
 
-    function showResults() {
+    function showResult() {
         quizContainer.classList.add('hidden');
         resultContainer.classList.remove('hidden');
-        finalScoreEl.textContent = score;
+        document.getElementById('final-score').textContent = score;
         
-        // 簡單評語邏輯
-        const totalScore = questions.length * 10;
-        const percentage = score / totalScore;
-        if (percentage === 1) resultCommentEl.textContent = "太強了！全對！🎉";
-        else if (percentage >= 0.8) resultCommentEl.textContent = "很棒！繼續保持！👍";
-        else if (percentage >= 0.6) resultCommentEl.textContent = "及格了，再接再厲！💪";
-        else resultCommentEl.textContent = "別氣餒，多練習幾次！📚";
+        // 評語邏輯
+        const p = score / (questions.length * 10);
+        let comment = "加油，再試一次！";
+        if (p === 1) comment = "完美！文法大師！";
+        else if (p >= 0.8) comment = "很棒！觀念很清楚！";
+        else if (p >= 0.6) comment = "及格了，繼續保持！";
+        
+        document.getElementById('result-comment').textContent = comment;
     }
 
-    restartBtn.addEventListener('click', () => {
-        // 重新洗牌並開始
+    // 按鈕事件綁定
+    document.getElementById('home-btn').addEventListener('click', showMenu);
+    document.getElementById('back-to-menu-btn').addEventListener('click', showMenu);
+    document.getElementById('restart-btn').addEventListener('click', () => {
         questions = shuffleArray(questions);
         startQuiz();
     });
 
+    // 工具: 洗牌
+    function shuffleArray(array) {
+        return array.sort(() => Math.random() - 0.5);
+    }
+
     // 啟動程式
-    fetchQuestions();
+    initMenu();
 });

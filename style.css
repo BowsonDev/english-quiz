@@ -1,7 +1,7 @@
 :root {
-    --primary-color: #20B2AA; /* LightSeaGreen */
-    --secondary-color: #E0F2F1; /* Mint */
-    --accent-color: #00897B; /* Darker Teal */
+    --primary-color: #20B2AA;
+    --secondary-color: #E0F2F1;
+    --accent-color: #00897B;
     --bg-color: #F5F7FA;
     --text-color: #333;
     --correct-color: #4CAF50;
@@ -9,145 +9,63 @@
     --card-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-}
-
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    display: flex;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 20px;
-}
-
-.app-container {
-    width: 100%;
-    max-width: 600px; /* 平板/電腦版限制寬度 */
-    margin: 0 auto;
-}
-
-/* 載入與隱藏類別 */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+body { background-color: var(--bg-color); color: var(--text-color); padding: 20px; min-height: 100vh; }
+.app-container { max-width: 600px; margin: 0 auto; }
 .hidden { display: none !important; }
-#loading-message { text-align: center; margin-top: 50px; font-size: 1.2rem; color: #666; }
 
-/* 進度條與資訊 */
-header { margin-bottom: 20px; }
-.progress-info {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: var(--accent-color);
+/* 主選單樣式 */
+.app-title { text-align: center; color: var(--accent-color); margin-bottom: 24px; }
+.grade-section { margin-bottom: 20px; }
+.grade-title { 
+    font-size: 1.2rem; color: var(--text-color); margin-bottom: 10px; 
+    border-left: 5px solid var(--primary-color); padding-left: 10px; 
 }
-.progress-bar {
-    width: 100%;
-    height: 8px;
-    background-color: #ddd;
-    border-radius: 4px;
-    overflow: hidden;
+.topic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.topic-btn {
+    background: white; border: 1px solid #ddd; padding: 15px; border-radius: 10px;
+    text-align: center; font-size: 1rem; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.2s;
 }
-#progress-fill {
-    height: 100%;
-    background-color: var(--primary-color);
-    width: 0%;
-    transition: width 0.3s ease;
-}
+.topic-btn:active { transform: scale(0.95); background-color: var(--secondary-color); border-color: var(--primary-color); }
 
-/* 卡片設計 */
-.card {
-    background: white;
-    padding: 24px;
-    border-radius: 16px;
-    box-shadow: var(--card-shadow);
-    margin-bottom: 20px;
-}
-#question-text {
-    font-size: 1.25rem;
-    margin-bottom: 24px;
-    line-height: 1.5;
-}
+/* 測驗區與其他共用 */
+.card { background: white; padding: 24px; border-radius: 16px; box-shadow: var(--card-shadow); margin-bottom: 20px; }
+#question-text { font-size: 1.25rem; margin-bottom: 24px; line-height: 1.5; }
+
+/* Header */
+header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.icon-btn { background: none; border: none; font-size: 1rem; cursor: pointer; color: #666; }
+.progress-info { font-weight: bold; color: var(--accent-color); display: flex; gap: 10px; }
+
+/* 進度條 */
+.progress-bar { width: 100%; height: 8px; background-color: #ddd; border-radius: 4px; overflow: hidden; margin-bottom: 20px; }
+#progress-fill { height: 100%; background-color: var(--primary-color); width: 0%; transition: width 0.3s ease; }
 
 /* 選項按鈕 */
-.options-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
+.options-grid { display: flex; flex-direction: column; gap: 12px; }
 .option-btn {
-    background: white;
-    border: 2px solid #e0e0e0;
-    padding: 14px 16px;
-    border-radius: 12px;
-    font-size: 1rem;
-    text-align: left;
-    cursor: pointer;
-    transition: all 0.2s;
-    min-height: 52px; /* 符合 Mobile 點擊標準 */
-    color: var(--text-color);
+    background: white; border: 2px solid #e0e0e0; padding: 14px 16px; border-radius: 12px;
+    font-size: 1rem; text-align: left; cursor: pointer; min-height: 52px; color: var(--text-color);
 }
-.option-btn:hover:not(:disabled) {
-    border-color: var(--primary-color);
-    background-color: var(--secondary-color);
-}
-.option-btn:disabled { cursor: default; opacity: 0.9; }
+.option-btn:disabled { cursor: default; }
+.option-btn.correct { background-color: #E8F5E9; border-color: var(--correct-color); color: var(--correct-color); font-weight: bold; }
+.option-btn.wrong { background-color: #FFEBEE; border-color: var(--wrong-color); color: var(--wrong-color); }
 
-/* 答題狀態樣式 */
-.option-btn.correct {
-    background-color: #E8F5E9;
-    border-color: var(--correct-color);
-    color: var(--correct-color);
-    font-weight: bold;
-}
-.option-btn.wrong {
-    background-color: #FFEBEE;
-    border-color: var(--wrong-color);
-    color: var(--wrong-color);
-}
+/* 詳解 */
+.explanation-box { background-color: var(--secondary-color); padding: 16px; border-radius: 8px; border-left: 4px solid var(--accent-color); margin-bottom: 20px; line-height: 1.6; }
 
-/* 詳解區塊 */
-.explanation-box {
-    background-color: var(--secondary-color);
-    padding: 16px;
-    border-radius: 8px;
-    border-left: 4px solid var(--accent-color);
-    margin-bottom: 20px;
-    line-height: 1.6;
+/* 按鈕系統 */
+.primary-btn, .secondary-btn {
+    width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 10px;
 }
+.primary-btn { background-color: var(--primary-color); color: white; box-shadow: 0 4px 6px rgba(32, 178, 170, 0.3); }
+.secondary-btn { background-color: #9E9E9E; color: white; }
 
-/* 通用按鈕 */
-.primary-btn {
-    width: 100%;
-    padding: 16px;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(32, 178, 170, 0.3);
-}
-.primary-btn:active { transform: scale(0.98); }
-
-/* 結算畫面 */
+/* 結算 */
 .result-card { text-align: center; padding: 40px 20px; }
 .score-circle {
-    width: 120px;
-    height: 120px;
-    background: var(--secondary-color);
-    color: var(--accent-color);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px auto;
-    font-size: 2.5rem;
-    font-weight: bold;
+    width: 120px; height: 120px; background: var(--secondary-color); color: var(--accent-color);
+    border-radius: 50%; display: flex; justify-content: center; align-items: center;
+    margin: 20px auto; font-size: 2.5rem; font-weight: bold;
 }
-.score-circle small { font-size: 1rem; margin-top: 10px; margin-left: 4px; }
-#result-comment { margin-bottom: 30px; font-size: 1.1rem; color: #666; }

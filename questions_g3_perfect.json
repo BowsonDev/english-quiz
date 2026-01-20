@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "question": "I _____ never _____ to Japan.",
+    "options": ["have, be", "have, been", "has, been", "did, go"],
+    "answer": "have, been",
+    "explanation": "現在完成式：have + p.p. (been)，表示從以前到現在的經驗。"
+  },
+  {
+    "id": 2,
+    "question": "The book _____ by J.K. Rowling.",
+    "options": ["wrote", "was written", "writes", "writing"],
+    "answer": "was written",
+    "explanation": "被動語態：be (was) + p.p. (written)，書是被寫出來的。"
+  },
+  {
+    "id": 3,
+    "question": "She has lived here _____ ten years.",
+    "options": ["since", "for", "in", "at"],
+    "answer": "for",
+    "explanation": "For + 一段時間；Since + 過去時間點。"
+  }
+]

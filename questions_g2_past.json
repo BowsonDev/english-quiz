@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "question": "She _____ to the park last weekend.",
+    "options": ["go", "goes", "went", "going"],
+    "answer": "went",
+    "explanation": "因為有 last weekend (上週末)，動詞要用過去式 went。"
+  },
+  {
+    "id": 2,
+    "question": "We _____ happy at the party yesterday.",
+    "options": ["was", "were", "are", "did"],
+    "answer": "were",
+    "explanation": "We (我們) 是複數，過去式的 Be 動詞要用 were。"
+  },
+  {
+    "id": 3,
+    "question": "Did you _____ the movie?",
+    "options": ["see", "saw", "seen", "seeing"],
+    "answer": "see",
+    "explanation": "助動詞 Did 後面必須恢復「原形動詞」。"
+  }
+]
