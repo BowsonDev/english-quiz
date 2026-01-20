@@ -67,10 +67,38 @@
     </div>
 
     <script src="script.js"></script>
+
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js');
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('SW registered:', registration);
+
+                        // 偵測是否正在安裝新版本
+                        registration.onupdatefound = () => {
+                            const installingWorker = registration.installing;
+                            installingWorker.onstatechange = () => {
+                                // 如果新版本已經安裝完成 (installed)
+                                if (installingWorker.state === 'installed') {
+                                    if (navigator.serviceWorker.controller) {
+                                        // 這裡代表有新版發現了！
+                                        console.log('New content is available; please refresh.');
+                                        // 選擇性：你可以自動重新整理，或顯示通知
+                                        // window.location.reload(); 
+                                    } else {
+                                        console.log('Content is cached for offline use.');
+                                    }
+                                }
+                            };
+                        };
+                    })
+                    .catch(err => console.log('SW failed', err));
+                
+                // 監聽來自 sw.js 的變動，確保頁面載入最新資源
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    window.location.reload();
+                });
             });
         }
     </script>
