@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "article": "Hello, my name is Tom. I am a student at Apple Junior High School. My favorite subject is English. I have a sister, Mary. She is tall and beautiful. We go to school by bus every day because our school is far from our home.",
+    "question": "1. Who is Mary?",
+    "options": ["Tom's mother", "Tom's teacher", "Tom's sister", "Tom's friend"],
+    "answer": "Tom's sister",
+    "explanation": "文章中提到 'I have a sister, Mary'。"
+  },
+  {
+    "id": 2,
+    "article": "Hello, my name is Tom. I am a student at Apple Junior High School. My favorite subject is English. I have a sister, Mary. She is tall and beautiful. We go to school by bus every day because our school is far from our home.",
+    "question": "2. How do they go to school?",
+    "options": ["By car", "By bus", "On foot", "By bike"],
+    "answer": "By bus",
+    "explanation": "文章最後一句提到 'We go to school by bus'。"
+  },
+  {
+    "id": 3,
+    "question": "Look at the sky. It _____ going to rain.",
+    "options": ["is", "am", "are", "be"],
+    "answer": "is",
+    "explanation": "It 是第三人稱單數，搭配 is。"
+  },
+  {
+    "id": 4,
+    "question": "_____ you usually play basketball on weekends?",
+    "options": ["Are", "Do", "Does", "Is"],
+    "answer": "Do",
+    "explanation": "Play 是動詞，疑問句需用助動詞 Do (因為主詞是 You)。"
+  }
+]

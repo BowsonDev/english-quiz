@@ -32,7 +32,48 @@ body { background-color: var(--bg-color); color: var(--text-color); padding: 20p
 /* 測驗區與其他共用 */
 .card { background: white; padding: 24px; border-radius: 16px; box-shadow: var(--card-shadow); margin-bottom: 20px; }
 #question-text { font-size: 1.25rem; margin-bottom: 24px; line-height: 1.5; }
+/* 閱讀測驗文章區塊 */
+#article-container {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+}
 
+.article-label {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#article-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #444;
+    white-space: pre-line; /* 保留文章的分段換行 */
+    max-height: 200px; /* 手機版高度限制，超過變捲動 */
+    overflow-y: auto;  /* 允許垂直捲動 */
+    padding-right: 5px; /* 避免捲軸擋住字 */
+}
+
+/* 分隔線 */
+.divider {
+    border: 0;
+    height: 1px;
+    background: #e0e0e0;
+    margin: 15px 0 5px 0;
+}
+
+/* 優化長文時的題目字體 */
+#question-text {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #222;
+}
 /* Header */
 header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .icon-btn { background: none; border: none; font-size: 1rem; cursor: pointer; color: #666; }
