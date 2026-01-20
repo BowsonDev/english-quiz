@@ -1,0 +1,20 @@
+{
+  "name": "國中英文刷題",
+  "short_name": "英文刷題",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F5F7FA",
+  "theme_color": "#20B2AA",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

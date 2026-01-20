@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "question": "Choose the correct verb form: She _____ to the library yesterday.",
+    "options": ["go", "went", "gone", "going"],
+    "answer": "went",
+    "explanation": "因為時間副詞是 yesterday (昨天)，動詞必須使用過去式 went。"
+  },
+  {
+    "id": 2,
+    "question": "The weather is _____ today than it was yesterday.",
+    "options": ["bad", "worse", "worst", "badly"],
+    "answer": "worse",
+    "explanation": "這是比較級句型 (than)，bad 的比較級是不規則變化的 worse。"
+  },
+  {
+    "id": 3,
+    "question": "My brother enjoys _____ computer games after school.",
+    "options": ["playing", "to play", "play", "played"],
+    "answer": "playing",
+    "explanation": "Enjoy (喜愛/享受) 後面必須接動名詞 (V-ing)。"
+  }
+]

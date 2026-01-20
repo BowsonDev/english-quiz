@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#20B2AA">
+    <meta name="description" content="國中英文刷題 PWA">
+    <title>國中英文刷題</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png"> <link rel="icon" type="image/png" href="icon.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <div id="loading-message">正在載入題庫...</div>
+
+        <div id="quiz-container" class="hidden">
+            <header>
+                <div class="progress-info">
+                    <span id="question-count">題目: --/--</span>
+                    <span id="score-display">得分: 0</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progress-fill"></div>
+                </div>
+            </header>
+
+            <main>
+                <div class="card">
+                    <h2 id="question-text">題目載入中...</h2>
+                    <div id="options-container" class="options-grid">
+                        </div>
+                </div>
+
+                <div id="explanation-container" class="hidden">
+                    <div class="explanation-box">
+                        <strong>解析：</strong>
+                        <span id="explanation-text"></span>
+                    </div>
+                    <button id="next-btn" class="primary-btn">下一題</button>
+                </div>
+            </main>
+        </div>
+
+        <div id="result-container" class="hidden">
+            <div class="card result-card">
+                <h2>測驗結束！</h2>
+                <div class="score-circle">
+                    <span id="final-score">0</span>
+                    <small>分</small>
+                </div>
+                <p id="result-comment">做得好！</p>
+                <button id="restart-btn" class="primary-btn">重新挑戰</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // 註冊 Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW registered!', reg))
+                    .catch(err => console.log('SW failed', err));
+            });
+        }
+    </script>
+</body>
+</html>
