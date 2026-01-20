@@ -1,5 +1,5 @@
 // 每次改版，請務必修改這裡的版號 (例如 v3 -> v4)
-const CACHE_NAME = 'eng-quiz-v4';
+const CACHE_NAME = 'eng-quiz-v4.1';
 const ASSETS_TO_CACHE = [
     './',
     './style.css',
